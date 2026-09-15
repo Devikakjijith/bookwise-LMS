@@ -2,7 +2,10 @@
 
 A small, practical library management web app built with Flask and MySQL — add books, register members, issue and return copies, and track fines, all from one dashboard. Built as an academic project to demonstrate full-stack web development with server-side rendering, session-based authentication, and relational database design.
 
+===========================================================================================================================================================================
+
 ✨ Features
+------------
 Two user roles — Admin (librarian) and Member, each with their own views and permissions
 Authentication — member registration with password strength rules, separate member/admin login, logout
 Book catalog — searchable by title, author, or category, with live availability
@@ -13,7 +16,11 @@ Admin dashboard — library-wide stats (total books, members, issued count, over
 Zero manual database setup — tables and a default admin account are created automatically on first run
 Flash messages for every action (success, error, and warning states), auto-dismissing after 10 seconds
 Consistent UI — one base template (shared navbar, header, footer) and one shared stylesheet across every page
+
+============================================================================================================================================================================
+
 🛠 Tech Stack
+-------------
 Layer	Technology
 Backend	Python, Flask
 Database	MySQL
@@ -22,3 +29,6 @@ Frontend	HTML5, CSS3 (no framework — hand-written responsive layout)
 Auth	Flask sessions + Werkzeug password hashing (scrypt)
 
 *Note*- don't forget to update the app.py sql settings with your sql root password.
+
+admin_email- admin@gmail.com
+admin_password- Admin@123
