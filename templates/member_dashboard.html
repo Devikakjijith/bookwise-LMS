@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — Bookwise Library{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <h1>My Dashboard</h1>
+  <p>Your currently borrowed books, due dates, and any fines owed.</p>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-tile">
+    <span class="value">{{ borrowed|length }}</span>
+    <span class="label">Books currently borrowed</span>
+  </div>
+  <div class="stat-tile {{ 'stat-tile--danger' if total_fine > 0 else '' }}">
+    <span class="value">Rs. {{ total_fine }}</span>
+    <span class="label">Total fine owed{{ ' (settle at the library desk)' if total_fine > 0 else '' }}</span>
+  </div>
+</div>
+
+<h2>Currently Borrowed</h2>
+{% if borrowed %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Book</th>
+        <th>Issue Date</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in borrowed %}
+        <tr>
+          <td>{{ b.title }} <span class="hint">by {{ b.author }}</span></td>
+          <td>{{ b.issue_date.strftime('%d %b %Y') }}</td>
+          <td>{{ b.due_date.strftime('%d %b %Y') }}</td>
+          <td>
+            {% if b.days_late > 0 %}
+              <span class="badge badge--overdue">Overdue {{ b.days_late }} day{{ 's' if b.days_late != 1 else '' }} — Rs. {{ b.current_fine }}</span>
+            {% else %}
+              <span class="badge badge--issued">On track</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <div class="card">
+    <p style="margin-bottom:0;">You don't have any books borrowed right now. Browse the <a href="{{ url_for('catalog') }}">catalog</a> to find something to read.</p>
+  </div>
+{% endif %}
+
+<h2 style="margin-top:2.5rem;">Borrowing History</h2>
+{% if history %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Book</th>
+        <th>Issued</th>
+        <th>Returned</th>
+        <th>Fine Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for h in history %}
+        <tr>
+          <td>{{ h.title }} <span class="hint">by {{ h.author }}</span></td>
+          <td>{{ h.issue_date.strftime('%d %b %Y') }}</td>
+          <td>{{ h.return_date.strftime('%d %b %Y') }}</td>
+          <td>
+            {% if h.fine_amount and h.fine_amount|float > 0 %}
+              Rs. {{ h.fine_amount|int }}
+            {% else %}
+              &mdash;
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <div class="card">
+    <p style="margin-bottom:0;">No past borrowing history yet.</p>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Book Catalog — Bookwise Library{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <h1>Book Catalog</h1>
+  <p>Browse all books in the library, or search by title or author.</p>
+</div>
+
+<form method="GET" action="{{ url_for('catalog') }}" class="search-bar">
+  <input type="text" name="q" placeholder="Search by title, author, or category..." value="{{ query }}">
+  <button type="submit" class="btn btn-primary">Search</button>
+  {% if query %}
+    <a href="{{ url_for('catalog') }}" class="btn btn-outline">Clear</a>
+  {% endif %}
+</form>
+
+{% if query %}
+  <p class="hint" style="margin-top:-1rem; margin-bottom:1.25rem;">
+    {{ books|length }} result{{ 's' if books|length != 1 else '' }} for &ldquo;{{ query }}&rdquo;
+  </p>
+{% endif %}
+
+{% if books %}
+  <div class="card-grid">
+    {% for book in books %}
+      <div class="book-card">
+        <h3>{{ book.title }}</h3>
+        <p class="author">by {{ book.author }}</p>
+        <span class="tag">{{ book.category }}</span>
+        <div class="meta">
+          {% if book.available_copies > 0 %}
+            <span class="badge badge--available">{{ book.available_copies }} of {{ book.total_copies }} available</span>
+          {% else %}
+            <span class="badge badge--unavailable">All copies issued</span>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card">
+    <p style="margin-bottom:0;">
+      {% if query %}
+        No books match &ldquo;{{ query }}&rdquo;. Try a different title or author.
+      {% else %}
+        No books have been added to the catalog yet.
+      {% endif %}
+    </p>
+  </div>
+{% endif %}
+{% endblock %}

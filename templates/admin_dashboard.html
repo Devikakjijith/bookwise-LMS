@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — Bookwise Library{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <h1>Admin Dashboard</h1>
+  <p>A quick overview of the library right now.</p>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-tile">
+    <span class="value">{{ total_books }}</span>
+    <span class="label">Total book titles ({{ total_copies }} copies)</span>
+  </div>
+  <div class="stat-tile">
+    <span class="value">{{ total_members }}</span>
+    <span class="label">Registered members</span>
+  </div>
+  <div class="stat-tile">
+    <span class="value">{{ books_issued }}</span>
+    <span class="label">Books currently issued</span>
+  </div>
+  <div class="stat-tile {{ 'stat-tile--danger' if overdue_count > 0 else '' }}">
+    <span class="value">{{ overdue_count }}</span>
+    <span class="label">Overdue right now</span>
+  </div>
+</div>
+
+<h2>Who Owes a Fine</h2>
+{% if overdue_rows %}
+  <p class="hint" style="margin-top:-1rem; margin-bottom:1.25rem;">
+    Total outstanding fines across all overdue books: <strong>Rs. {{ total_fines_owed }}</strong>
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Book</th>
+          <th>Due Date</th>
+          <th>Days Late</th>
+          <th>Fine</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in overdue_rows %}
+          <tr>
+            <td>{{ r.member_name }} <span class="hint">{{ r.email }}</span></td>
+            <td>{{ r.book_title }}</td>
+            <td>{{ r.due_date.strftime('%d %b %Y') }}</td>
+            <td><span class="badge badge--overdue">{{ r.days_late }} day{{ 's' if r.days_late != 1 else '' }}</span></td>
+            <td>Rs. {{ r.fine }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="card">
+    <p style="margin-bottom:0;">No overdue books right now — nobody owes a fine.</p>
+  </div>
+{% endif %}
+{% endblock %}

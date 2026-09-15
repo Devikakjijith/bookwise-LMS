@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Bookwise Library — Sign in{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-intro">
+    <h1>Track every book, member, and due date in one place.</h1>
+    <p class="lede">
+      Bookwise is a small library management system: add books, register members,
+      issue and return copies, and see who owes a fine — all from one dashboard.
+    </p>
+
+    <div class="auth-links">
+      <p>New here?
+        <a href="{{ url_for('member_register') if 'member_register' in url_map_endpoints else '#' }}">Register as a member</a>
+      </p>
+      <p>Are you the librarian?
+        <a href="{{ url_for('admin_login') if 'admin_login' in url_map_endpoints else '#' }}">Sign in as Admin</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Member sign in</h2>
+    <p class="hint" style="margin-bottom:1.25rem;">Use the email and password you registered with.</p>
+
+    <form method="POST" action="{{ url_for('member_login') if 'member_login' in url_map_endpoints else '#' }}" autocomplete="off">
+      <input type="text" name="fake_username" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="password" name="fake_password" style="display:none" tabindex="-1" autocomplete="off">
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="off" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Sign in</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Return Book — Bookwise Library{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <h1>Return Book</h1>
+  <p>Mark a copy as returned. Books returned after the due date incur a fine of Rs. {{ fine_per_day }}/day.</p>
+</div>
+
+{% if active_issues %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Book</th>
+        <th>Member</th>
+        <th>Issue Date</th>
+        <th>Due Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in active_issues %}
+        {% set days_late = (today - t.due_date).days %}
+        <tr>
+          <td>{{ t.book_title }}</td>
+          <td>{{ t.member_name }}</td>
+          <td>{{ t.issue_date.strftime('%d %b %Y') }}</td>
+          <td>{{ t.due_date.strftime('%d %b %Y') }}</td>
+          <td>
+            {% if days_late > 0 %}
+              <span class="badge badge--overdue">Overdue by {{ days_late }} day{{ 's' if days_late != 1 else '' }}</span>
+              <div class="hint">Estimated fine if returned today: Rs. {{ days_late * fine_per_day }}</div>
+            {% else %}
+              <span class="badge badge--issued">On time</span>
+            {% endif %}
+          </td>
+          <td>
+            <form method="POST" action="{{ url_for('admin_return_book', transaction_id=t.id) }}"
+                  onsubmit="return confirm('Mark &quot;{{ t.book_title }}&quot; as returned by {{ t.member_name }}?');">
+              <button type="submit" class="btn btn-primary btn-sm">Return</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <div class="card">
+    <p style="margin-bottom:0;">No books are currently issued — nothing to return.</p>
+  </div>
+{% endif %}
+{% endblock %}

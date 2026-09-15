@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add Book' if mode == 'add' else 'Edit Book' }} — Bookwise Library{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <h1>{{ 'Add a new book' if mode == 'add' else 'Edit book' }}</h1>
+  {% if mode == 'edit' and book %}
+    <p>Editing &ldquo;{{ book.title }}&rdquo;.</p>
+  {% else %}
+    <p>Add a new title to the catalog.</p>
+  {% endif %}
+</div>
+
+<div class="card" style="max-width: 560px;">
+  <form method="POST"
+        action="{{ url_for('admin_book_add') if mode == 'add' else url_for('admin_book_edit', book_id=book.id) }}">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" required value="{{ form.get('title', '') if form else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input type="text" id="author" name="author" required value="{{ form.get('author', '') if form else '' }}">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" required
+               placeholder="e.g. Fiction, Science, History"
+               value="{{ form.get('category', '') if form else '' }}">
+      </div>
+      <div class="form-group">
+        <label for="total_copies">Total copies</label>
+        <input type="number" id="total_copies" name="total_copies" min="1" required
+               value="{{ form.get('total_copies', '') if form else '' }}">
+        {% if mode == 'edit' and book %}
+          <p class="hint">{{ book.total_copies - book.available_copies }} currently issued to members.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button type="submit" class="btn btn-primary">{{ 'Add Book' if mode == 'add' else 'Save Changes' }}</button>
+      <a href="{{ url_for('admin_books') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

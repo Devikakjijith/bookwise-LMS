@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Bookwise Library{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="{{ url_for('home') if 'home' in url_map_endpoints else '/' }}" class="navbar__brand">
+        Bookwise <span>Library Management</span>
+      </a>
+
+      <div class="navbar__links">
+        {% if session.get('user_id') %}
+          {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('admin_dashboard') if 'admin_dashboard' in url_map_endpoints else '#' }}">Dashboard</a>
+            <a href="{{ url_for('admin_books') if 'admin_books' in url_map_endpoints else '#' }}">Books</a>
+            <a href="{{ url_for('admin_issue') if 'admin_issue' in url_map_endpoints else '#' }}">Issue Book</a>
+            <a href="{{ url_for('admin_return') if 'admin_return' in url_map_endpoints else '#' }}">Return Book</a>
+            <span class="navbar__role">Admin</span>
+          {% else %}
+            <a href="{{ url_for('member_dashboard') if 'member_dashboard' in url_map_endpoints else '#' }}">My Dashboard</a>
+            <a href="{{ url_for('catalog') if 'catalog' in url_map_endpoints else '#' }}">Catalog</a>
+            <span class="navbar__role">Member</span>
+          {% endif %}
+          <a href="{{ url_for('logout') if 'logout' in url_map_endpoints else '#' }}">Logout</a>
+        {% else %}
+          <a href="{{ url_for('home') if 'home' in url_map_endpoints else '/' }}">Home</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+
+  <main class="main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-list">
+          {% for category, message in messages %}
+            <li class="flash flash--{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Bookwise Library</h4>
+        <p>A small, no-fuss system for managing books, members, and returns &mdash; built for librarians who just need it to work.</p>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <p><a href="mailto:support@bookwise-library.example">support@bookwise-library.example</a></p>
+        <p><a href="tel:+911234567890">+91 12345 67890</a></p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <p>Main Library Desk<br>College Campus Road<br>Kochi, Kerala, India</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; {{ current_year }} Bookwise Library Management System. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Auto-dismiss flash messages after 10 seconds
+    document.addEventListener('DOMContentLoaded', function () {
+      var flashList = document.querySelector('.flash-list');
+      if (flashList) {
+        setTimeout(function () {
+          flashList.style.transition = 'opacity 0.5s ease';
+          flashList.style.opacity = '0';
+          setTimeout(function () { flashList.remove(); }, 500);
+        }, 10000);
+      }
+    });
+  </script>
+
+</body>
+</html>
