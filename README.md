@@ -27,7 +27,7 @@ Templating	Jinja2<br>
 Frontend	HTML5, CSS3 (no framework — hand-written responsive layout)<br>
 Auth	Flask sessions + Werkzeug password hashing (scrypt)<br>
 <br>
-*Note*- don't forget to update the app.py sql settings with your sql root password.<br>
+**Note- don't forget to update the app.py sql settings with your sql root password.<br>**
 <br>
 admin_email- admin@gmail.com<br>
 admin_password- Admin@123
