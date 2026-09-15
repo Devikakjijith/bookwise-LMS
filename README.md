@@ -6,16 +6,16 @@ A small, practical library management web app built with Flask and MySQL — add
 
 ✨ Features
 ------------
-Two user roles — Admin (librarian) and Member, each with their own views and permissions
-Authentication — member registration with password strength rules, separate member/admin login, logout
-Book catalog — searchable by title, author, or category, with live availability
-Admin book management — add, edit, and delete books, with safeguards against duplicates and inconsistent copy counts
-Issue & Return workflow — 14-day borrowing period, automatic due date calculation, and a ₹5/day late fine calculated automatically on return
-Member dashboard — currently borrowed books, due dates, live fine estimates, and borrowing history
-Admin dashboard — library-wide stats (total books, members, issued count, overdue count) and a "who owes a fine" report
-Zero manual database setup — tables and a default admin account are created automatically on first run
-Flash messages for every action (success, error, and warning states), auto-dismissing after 10 seconds
-Consistent UI — one base template (shared navbar, header, footer) and one shared stylesheet across every page
+Two user roles — Admin (librarian) and Member, each with their own views and permissions<br>
+Authentication — member registration with password strength rules, separate member/admin login, logout<br>
+Book catalog — searchable by title, author, or category, with live availability<br>
+Admin book management — add, edit, and delete books, with safeguards against duplicates and inconsistent copy counts<br>
+Issue & Return workflow — 14-day borrowing period, automatic due date calculation, and a ₹5/day late fine calculated automatically on return<br>
+Member dashboard — currently borrowed books, due dates, live fine estimates, and borrowing history<br>
+Admin dashboard — library-wide stats (total books, members, issued count, overdue count) and a "who owes a fine" report<br>
+Zero manual database setup — tables and a default admin account are created automatically on first run<br>
+Flash messages for every action (success, error, and warning states), auto-dismissing after 10 seconds<br>
+Consistent UI — one base template (shared navbar, header, footer) and one shared stylesheet across every page<br>
 
 ============================================================================================================================================================================
 
